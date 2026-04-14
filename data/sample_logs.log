@@ -1,0 +1,5 @@
+[ERROR] OOMKilled: container 'api-server' exceeded memory limit of 512Mi, killed by kernel
+[ERROR] FATAL: connection pool exhausted - max 20 connections reached, PostgreSQL refusing new connections
+[ERROR] CrashLoopBackOff: pod 'payment-service-7d9f8b' restarting, exit code 137, last 5 restarts in 10 minutes
+[WARN]  Readiness probe failed: HTTP probe failed with statuscode: 503 for pod 'auth-service'
+[ERROR] Timeout: upstream service 'inventory-api' did not respond within 30s, circuit breaker open
