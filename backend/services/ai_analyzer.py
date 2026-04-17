@@ -8,14 +8,32 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 MOCK_MODE = os.getenv("MOCK_MODE", "false").lower() == "true"
 
-SYSTEM_PROMPT = """You are a senior DevOps incident analyst.
+def load_system_context() -> str:
+    context_path = os.path.join(
+        os.path.dirname(__file__), "..", "..", "data", "system_context.txt"
+    )
+    try:
+        with open(os.path.normpath(context_path), "r") as f:
+            return f.read()
+    except FileNotFoundError:
+        return ""
+
+SYSTEM_CONTEXT = load_system_context()
+
+SYSTEM_PROMPT = f"""You are a senior DevOps incident analyst for a Pharma enterprise platform.
+
+Here is the system context you must use when analyzing logs:
+{SYSTEM_CONTEXT}
+
 Given a log entry, respond ONLY with a JSON object — no explanation, no markdown, no backticks.
 Format:
-{
-  "cause": "one sentence root cause",
-  "fix": "one sentence recommended fix",
+{{
+  "cause": "one sentence root cause specific to this system",
+  "fix": "one sentence recommended fix referencing the actual service or component",
   "severity": "low | medium | high | critical"
-}"""
+}}
+
+If the log involves payment-service, always set severity to critical."""
 
 def analyze_log(log_text: str) -> dict:
     if MOCK_MODE:

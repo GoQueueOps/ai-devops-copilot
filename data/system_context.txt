@@ -1,0 +1,20 @@
+System: Pharma Enterprise Application Platform
+Stack: Kubernetes (EKS) + PostgreSQL + Python microservices + Redis cache
+
+Services:
+- api-server: Main REST API, memory limit 512Mi
+- payment-service: Handles transactions, critical SLA
+- auth-service: JWT authentication, readiness probe on /health
+- inventory-api: Internal service, 30s timeout threshold
+
+Common Issues and Patterns:
+- OOMKilled → container hit memory limit, usually api-server under high load
+- CrashLoopBackOff exit code 137 → OOM kill by kernel
+- PostgreSQL connection pool exhausted → max 20 connections, check connection leaks
+- Circuit breaker open → downstream service degraded, check inventory-api pods
+- Readiness probe failing → app not ready, check startup logs and /health endpoint
+
+Escalation Rules:
+- payment-service issues → always CRITICAL severity
+- More than 3 pod restarts in 10 mins → page on-call engineer
+- DB connection errors → notify DBA team immediately

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes import logs
+from db.database import init_db
 
 app = FastAPI(
     title="AI DevOps Copilot",
@@ -14,6 +15,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+def startup():
+    init_db()
 
 app.include_router(logs.router, prefix="/api")
 
