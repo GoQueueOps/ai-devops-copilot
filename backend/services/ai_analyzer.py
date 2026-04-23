@@ -3,7 +3,8 @@ import json
 from openai import OpenAI
 from dotenv import load_dotenv
 
-load_dotenv()
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
+load_dotenv(dotenv_path=dotenv_path)
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 MOCK_MODE = os.getenv("MOCK_MODE", "false").lower() == "true"
@@ -20,21 +21,6 @@ def load_system_context() -> str:
 
 SYSTEM_CONTEXT = load_system_context()
 
-SYSTEM_PROMPT = f"""You are a senior DevOps incident analyst for a Pharma enterprise platform.
-
-Here is the system context you must use when analyzing logs:
-{SYSTEM_CONTEXT}
-
-Given a log entry, respond ONLY with a JSON object — no explanation, no markdown, no backticks.
-Format:
-{{
-  "cause": "one sentence root cause specific to this system",
-  "fix": "one sentence recommended fix referencing the actual service or component",
-  "severity": "low | medium | high | critical"
-}}
-
-If the log involves payment-service, always set severity to critical."""
-
 def analyze_log(log_text: str) -> dict:
     if MOCK_MODE:
         return {
@@ -43,11 +29,45 @@ def analyze_log(log_text: str) -> dict:
             "severity": "high"
         }
 
+    # Search vector DB for relevant documentation
+    try:
+        from services.vector_search import search_relevant_docs
+        relevant_docs = search_relevant_docs(log_text)
+    except Exception as e:
+        print(f"Vector search skipped: {e}")
+        relevant_docs = ""
+
+    # Build enriched prompt
+    system_prompt = f"""You are a senior DevOps incident analyst for a Pharma enterprise platform.
+
+=== SYSTEM CONTEXT ===
+{SYSTEM_CONTEXT}"""
+
+    if relevant_docs:
+        system_prompt += f"""
+
+=== RELEVANT DOCUMENTATION ===
+{relevant_docs}
+
+Use the documentation above to give specific fix steps where available."""
+
+    system_prompt += """
+
+Given the log entry, respond ONLY with a JSON object — no explanation, no markdown, no backticks.
+Format:
+{
+  "cause": "specific root cause referencing actual services or documentation",
+  "fix": "specific fix referencing runbook steps if available",
+  "severity": "low | medium | high | critical"
+}
+
+If the log involves payment-service, always set severity to critical."""
+
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        max_tokens=200,
+        max_tokens=300,
         messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"Analyze this log:\n{log_text}"}
         ]
     )
