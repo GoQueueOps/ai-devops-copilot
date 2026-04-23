@@ -428,8 +428,20 @@ Tip: Upload your runbooks above first for specific fix recommendations"></textar
     } catch {}
   }
 
+  // ── CURL COMMAND ───────────────────────────────────────────────────────
+  function updateCurlCommand(filename) {
+    document.getElementById('curl-command').textContent =
+      `curl -X POST http://localhost:8000/api/upload-document -F "file=@/path/to/${filename}"`;
+  }
 
-
+  function copyCurl() {
+    const text = document.getElementById('curl-command').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 1500);
+    });
+  }
 
   // ── LOG ANALYSIS ───────────────────────────────────────────────────────
   async function analyzeLog() {
