@@ -11,13 +11,17 @@
       --surface: #161b22;
       --surface2: #1c2128;
       --border: #30363d;
+      --border2: #21262d;
       --green: #3fb950;
+      --green-dim: #1a3a21;
       --red: #f85149;
       --amber: #d29922;
       --purple: #a371f7;
       --blue: #58a6ff;
+      --teal: #39d0b0;
       --text: #e6edf3;
       --text2: #8b949e;
+      --text3: #484f58;
       --mono: 'JetBrains Mono', monospace;
       --sans: 'DM Sans', sans-serif;
     }
@@ -30,45 +34,136 @@
       padding: 16px 32px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      justify-content: space-between;
     }
+    .header-left { display: flex; align-items: center; gap: 14px; }
     .logo {
       width: 36px; height: 36px;
-      background: #1a3a21;
+      background: var(--green-dim);
       border: 1px solid var(--green);
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      font-family: var(--mono);
-      font-weight: 700;
-      color: var(--green);
-      font-size: 14px;
+      font-family: var(--mono); font-weight: 700; color: var(--green); font-size: 14px;
     }
     .header-title { font-family: var(--mono); font-size: 15px; font-weight: 500; }
     .header-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
-
-    .container { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
-
-    .section-title {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text2);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 10px;
+    .version-badge {
+      font-family: var(--mono); font-size: 10px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 4px; padding: 3px 8px; color: var(--green);
     }
 
-    textarea {
-      width: 100%;
-      height: 160px;
+    .container { max-width: 960px; margin: 0 auto; padding: 28px 24px; }
+
+    .section-title {
+      font-family: var(--mono); font-size: 11px; color: var(--text2);
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;
+    }
+
+    /* Document upload area */
+    .upload-area {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      color: var(--text);
-      font-family: var(--mono);
-      font-size: 13px;
-      resize: vertical;
-      outline: none;
+      border: 1.5px dashed var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .upload-area:hover { border-color: var(--green); background: #161b22ee; }
+    .upload-area.dragover { border-color: var(--green); background: var(--green-dim); }
+    .upload-area input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .upload-icon {
+      width: 40px; height: 40px; margin: 0 auto 10px;
+      background: var(--green-dim); border: 1px solid var(--green);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .upload-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+    .upload-sub { font-size: 12px; color: var(--text2); }
+    .upload-formats {
+      margin-top: 8px; font-family: var(--mono); font-size: 10px;
+      color: var(--text3);
+    }
+
+    /* Upload progress */
+    .upload-progress {
+      margin-top: 12px; display: none;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 16px;
+    }
+    .upload-progress-bar-track {
+      height: 3px; background: var(--border); border-radius: 2px;
+      margin-top: 8px; overflow: hidden;
+    }
+    .upload-progress-bar {
+      height: 100%; background: var(--green);
+      border-radius: 2px; width: 0%;
+      transition: width 0.3s ease;
+    }
+    .upload-result {
+      margin-top: 10px; display: none;
+      padding: 10px 14px; border-radius: 8px;
+      font-size: 13px; font-family: var(--mono);
+    }
+    .upload-result.success {
+      background: var(--green-dim); border: 1px solid #3fb95044; color: var(--green);
+    }
+    .upload-result.error {
+      background: #2d1010; border: 1px solid #f8514944; color: var(--red);
+    }
+
+    /* Documents list */
+    .docs-list {
+      margin-top: 14px;
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .doc-pill {
+      background: var(--surface2); border: 1px solid var(--border2);
+      border-radius: 6px; padding: 5px 12px;
+      font-family: var(--mono); font-size: 11px; color: var(--text2);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .doc-pill-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+    }
+
+    /* Curl command box */
+    .curl-box {
+      margin-top: 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+    .curl-box-title {
+      font-family: var(--mono); font-size: 10px; color: var(--text3);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;
+    }
+    .curl-code {
+      font-family: var(--mono); font-size: 11px; color: var(--teal);
+      line-height: 1.6; word-break: break-all;
+    }
+    .copy-btn {
+      margin-top: 8px;
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 5px; padding: 4px 10px;
+      font-size: 11px; color: var(--text2);
+      cursor: pointer; font-family: var(--mono);
+      transition: all 0.15s;
+    }
+    .copy-btn:hover { border-color: var(--teal); color: var(--teal); }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+    textarea {
+      width: 100%; height: 160px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px; color: var(--text);
+      font-family: var(--mono); font-size: 13px; resize: vertical; outline: none;
       transition: border-color 0.2s;
     }
     textarea:focus { border-color: var(--green); }
@@ -76,139 +171,136 @@
 
     .btn {
       margin-top: 12px;
-      background: var(--green);
-      color: #0d1117;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 28px;
-      font-family: var(--sans);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      background: var(--green); color: #0d1117;
+      border: none; border-radius: 8px; padding: 12px 28px;
+      font-family: var(--sans); font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s;
+      display: flex; align-items: center; gap: 8px;
     }
     .btn:hover { opacity: 0.85; }
     .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     .result-card {
-      margin-top: 24px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      display: none;
+      margin-top: 20px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; display: none;
     }
     .result-header {
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
     }
     .result-title { font-family: var(--mono); font-size: 13px; font-weight: 500; }
     .severity-badge {
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 4px;
-      font-weight: 700;
-      text-transform: uppercase;
+      font-family: var(--mono); font-size: 11px;
+      padding: 3px 10px; border-radius: 4px;
+      font-weight: 700; text-transform: uppercase;
     }
     .result-body { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .result-field label {
-      font-size: 11px;
-      color: var(--text2);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-family: var(--mono);
-      display: block;
-      margin-bottom: 6px;
+      font-size: 11px; color: var(--text2); text-transform: uppercase;
+      letter-spacing: 0.06em; font-family: var(--mono); display: block; margin-bottom: 6px;
     }
-    .result-field p {
-      font-size: 14px;
-      color: var(--text);
-      line-height: 1.6;
-    }
+    .result-field p { font-size: 13px; color: var(--text); line-height: 1.7; }
 
-    .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
-
-    .incidents-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
+    .incidents-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .incidents-table th {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text2);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 10px 14px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface2);
+      font-family: var(--mono); font-size: 11px; color: var(--text2);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 10px 14px; text-align: left;
+      border-bottom: 1px solid var(--border); background: var(--surface2);
     }
     .incidents-table td {
-      padding: 12px 14px;
-      border-bottom: 1px solid #21262d;
-      color: var(--text2);
-      vertical-align: top;
+      padding: 12px 14px; border-bottom: 1px solid var(--border2);
+      color: var(--text2); vertical-align: top;
     }
     .incidents-table tr:hover td { background: var(--surface2); color: var(--text); }
-    .incidents-table .log-cell {
-      font-family: var(--mono);
-      font-size: 11px;
-      max-width: 280px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    .log-cell {
+      font-family: var(--mono); font-size: 11px;
+      max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
 
     .spinner {
       width: 16px; height: 16px;
-      border: 2px solid #0d1117;
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
+      border: 2px solid #0d1117; border-top-color: transparent;
+      border-radius: 50%; animation: spin 0.6s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .empty-state {
-      text-align: center;
-      padding: 40px;
-      color: var(--text2);
-      font-size: 13px;
+    .empty-state { text-align: center; padding: 40px; color: var(--text2); font-size: 13px; }
+
+    .rag-indicator {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #0d2e29; border: 1px solid #39d0b044;
+      border-radius: 4px; padding: 2px 8px;
+      font-family: var(--mono); font-size: 10px; color: var(--teal);
     }
   </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="logo">AI</div>
-  <div>
-    <div class="header-title">AI DevOps Copilot</div>
-    <div class="header-sub">Incident analysis powered by OpenAI</div>
+  <div class="header-left">
+    <div class="logo">AI</div>
+    <div>
+      <div class="header-title">AI DevOps Copilot</div>
+      <div class="header-sub">Incident analysis powered by OpenAI + RAG</div>
+    </div>
   </div>
+  <div class="version-badge">v2.0 — Phase 2 RAG</div>
 </div>
 
 <div class="container">
 
-  <!-- Analyze section -->
+  <!-- DOCUMENT UPLOAD SECTION -->
+  <div class="section-title">// knowledge base — upload runbooks & docs</div>
+
+  <div class="upload-area" id="upload-area">
+    <input type="file" id="file-input" accept=".pdf,.txt,.md" onchange="handleFileSelect(this)">
+    <div class="upload-icon">📄</div>
+    <div class="upload-title">Drop a file or click to upload</div>
+    <div class="upload-sub">Runbooks, functional specs, architecture docs, incident reports</div>
+    <div class="upload-formats">Supported: .pdf  .txt  .md</div>
+  </div>
+
+  <div class="upload-progress" id="upload-progress">
+    <div style="font-size:12px;color:var(--text2);font-family:var(--mono);" id="upload-filename"></div>
+    <div class="upload-progress-bar-track">
+      <div class="upload-progress-bar" id="upload-bar"></div>
+    </div>
+  </div>
+
+  <div class="upload-result" id="upload-result"></div>
+
+  <div class="docs-list" id="docs-list"></div>
+
+  <!-- CURL COMMAND BOX -->
+  <div class="curl-box">
+    <div class="curl-box-title">// curl command — upload via terminal</div>
+    <div class="curl-code" id="curl-command">curl -X POST http://localhost:8000/api/upload-document -F "file=@/path/to/your/runbook.pdf"</div>
+    <button class="copy-btn" onclick="copyCurl()">Copy</button>
+  </div>
+
+  <hr class="divider">
+
+  <!-- LOG ANALYSIS SECTION -->
   <div class="section-title">// paste log for analysis</div>
   <textarea id="log-input" placeholder="Paste your log here...
-Example: CrashLoopBackOff: pod payment-service restarting, exit code 137"></textarea>
+Example: CrashLoopBackOff: pod payment-service restarting, exit code 137
+
+Tip: Upload your runbooks above first for specific fix recommendations"></textarea>
+
   <button class="btn" id="analyze-btn" onclick="analyzeLog()">
     <span id="btn-text">Analyze Log</span>
     <div class="spinner" id="spinner" style="display:none"></div>
   </button>
 
-  <!-- Result card -->
+  <!-- RESULT CARD -->
   <div class="result-card" id="result-card">
     <div class="result-header">
-      <span class="result-title">Analysis Result</span>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="result-title">Analysis Result</span>
+        <span class="rag-indicator" id="rag-indicator" style="display:none">RAG</span>
+      </div>
       <span class="severity-badge" id="severity-badge"></span>
     </div>
     <div class="result-body">
@@ -225,9 +317,9 @@ Example: CrashLoopBackOff: pod payment-service restarting, exit code 137"></text
 
   <hr class="divider">
 
-  <!-- Incidents history -->
+  <!-- INCIDENTS TABLE -->
   <div class="section-title">// recent incidents</div>
-  <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
     <table class="incidents-table">
       <thead>
         <tr>
@@ -256,6 +348,102 @@ Example: CrashLoopBackOff: pod payment-service restarting, exit code 137"></text
     critical: { bg: '#1e1040', color: '#a371f7', border: '#a371f744' },
   };
 
+  // ── DRAG AND DROP ──────────────────────────────────────────────────────
+  const uploadArea = document.getElementById('upload-area');
+  uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) uploadFile(file);
+  });
+
+  function handleFileSelect(input) {
+    if (input.files[0]) uploadFile(input.files[0]);
+  }
+
+  // ── FILE UPLOAD ────────────────────────────────────────────────────────
+  async function uploadFile(file) {
+    const allowed = ['.pdf', '.txt', '.md'];
+    const ext = '.' + file.name.split('.').pop().toLowerCase();
+    if (!allowed.includes(ext)) {
+      showUploadResult(`File type ${ext} not supported. Use: .pdf .txt .md`, 'error');
+      return;
+    }
+
+    const progress = document.getElementById('upload-progress');
+    const bar = document.getElementById('upload-bar');
+    const filename = document.getElementById('upload-filename');
+    const result = document.getElementById('upload-result');
+
+    result.style.display = 'none';
+    progress.style.display = 'block';
+    filename.textContent = `Uploading ${file.name}...`;
+    bar.style.width = '30%';
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      bar.style.width = '60%';
+      const res = await fetch(`${API}/upload-document`, { method: 'POST', body: formData });
+      bar.style.width = '100%';
+      const data = await res.json();
+
+      if (res.ok) {
+        showUploadResult(`✓ ${data.filename} ingested — ${data.chunks} chunk(s) stored in knowledge base`, 'success');
+        loadDocuments();
+        updateCurlCommand(file.name);
+      } else {
+        showUploadResult(`Error: ${data.detail}`, 'error');
+      }
+    } catch (err) {
+      showUploadResult(`Failed to upload: ${err.message}`, 'error');
+    } finally {
+      setTimeout(() => { progress.style.display = 'none'; bar.style.width = '0%'; }, 1000);
+    }
+  }
+
+  function showUploadResult(msg, type) {
+    const el = document.getElementById('upload-result');
+    el.textContent = msg;
+    el.className = `upload-result ${type}`;
+    el.style.display = 'block';
+  }
+
+  // ── DOCUMENTS LIST ─────────────────────────────────────────────────────
+  async function loadDocuments() {
+    try {
+      const res = await fetch(`${API}/documents`);
+      const data = await res.json();
+      const list = document.getElementById('docs-list');
+      if (!data.uploaded_files.length) {
+        list.innerHTML = '<div style="font-size:12px;color:var(--text3);font-family:var(--mono);">No documents uploaded yet</div>';
+        return;
+      }
+      list.innerHTML = data.uploaded_files.map(f =>
+        `<div class="doc-pill"><div class="doc-pill-dot"></div>${f}</div>`
+      ).join('');
+    } catch {}
+  }
+
+  // ── CURL COMMAND ───────────────────────────────────────────────────────
+  function updateCurlCommand(filename) {
+    document.getElementById('curl-command').textContent =
+      `curl -X POST http://localhost:8000/api/upload-document -F "file=@/path/to/${filename}"`;
+  }
+
+  function copyCurl() {
+    const text = document.getElementById('curl-command').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 1500);
+    });
+  }
+
+  // ── LOG ANALYSIS ───────────────────────────────────────────────────────
   async function analyzeLog() {
     const logText = document.getElementById('log-input').value.trim();
     if (!logText) return;
@@ -275,21 +463,19 @@ Example: CrashLoopBackOff: pod payment-service restarting, exit code 137"></text
         body: JSON.stringify({ log_text: logText })
       });
       const data = await res.json();
-
-      const card = document.getElementById('result-card');
-      const badge = document.getElementById('severity-badge');
       const colors = severityColors[data.severity] || severityColors.medium;
+      const badge = document.getElementById('severity-badge');
 
       document.getElementById('result-cause').textContent = data.cause;
       document.getElementById('result-fix').textContent = data.fix;
-
       badge.textContent = data.severity;
-      badge.style.background = colors.bg;
-      badge.style.color = colors.color;
-      badge.style.border = `1px solid ${colors.border}`;
+      badge.style.cssText = `background:${colors.bg};color:${colors.color};border:1px solid ${colors.border}`;
 
-      card.style.display = 'block';
+      // Show RAG indicator if fix looks like it came from docs
+      const ragIndicator = document.getElementById('rag-indicator');
+      ragIndicator.style.display = data.fix.includes('kubectl') || data.fix.length > 80 ? 'flex' : 'none';
 
+      document.getElementById('result-card').style.display = 'block';
       loadIncidents();
     } catch (err) {
       alert('Error connecting to API. Is uvicorn running?');
@@ -300,6 +486,7 @@ Example: CrashLoopBackOff: pod payment-service restarting, exit code 137"></text
     }
   }
 
+  // ── INCIDENTS TABLE ────────────────────────────────────────────────────
   async function loadIncidents() {
     try {
       const res = await fetch(`${API}/incidents`);
@@ -312,30 +499,25 @@ Example: CrashLoopBackOff: pod payment-service restarting, exit code 137"></text
       }
 
       tbody.innerHTML = incidents.map(i => {
-        const colors = severityColors[i.severity] || severityColors.medium;
+        const c = severityColors[i.severity] || severityColors.medium;
         const time = new Date(i.created_at).toLocaleString();
         return `<tr>
-          <td style="font-family:var(--mono);color:var(--text2)">${i.id}</td>
+          <td style="font-family:var(--mono);color:var(--text3)">${i.id}</td>
           <td class="log-cell">${i.log_text}</td>
-          <td style="max-width:240px">${i.cause}</td>
-          <td>
-            <span style="font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:4px;background:${colors.bg};color:${colors.color};border:1px solid ${colors.border}">
-              ${i.severity}
-            </span>
-          </td>
+          <td style="max-width:260px;font-size:12px">${i.cause}</td>
+          <td><span style="font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:4px;background:${c.bg};color:${c.color};border:1px solid ${c.border}">${i.severity}</span></td>
           <td style="font-family:var(--mono);font-size:11px;white-space:nowrap">${time}</td>
         </tr>`;
       }).join('');
-    } catch (err) {
-      console.error('Failed to load incidents', err);
-    }
+    } catch {}
   }
 
-  // Load on enter key
+  // Ctrl+Enter to analyze
   document.getElementById('log-input').addEventListener('keydown', e => {
     if (e.ctrlKey && e.key === 'Enter') analyzeLog();
   });
 
+  loadDocuments();
   loadIncidents();
 </script>
 </body>
