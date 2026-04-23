@@ -31,5 +31,13 @@ def health():
 
 @app.get("/")
 def serve_frontend():
-    frontend_path = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'index.html')
-    return FileResponse(os.path.normpath(frontend_path))
+    # Docker path
+    docker_path = "/app/frontend/index.html"
+    # Local development path
+    local_path = os.path.normpath(
+        os.path.join(os.path.dirname(__file__), '..', 'frontend', 'index.html')
+    )
+    
+    if os.path.exists(docker_path):
+        return FileResponse(docker_path)
+    return FileResponse(local_path)
