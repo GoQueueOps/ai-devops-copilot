@@ -8,7 +8,7 @@ An AI-powered incident analysis system that ingests production logs, understands
 
 ## 🚀 Live Demo
 
-> Coming soon — deploying to Render
+> > 🟢 Live at https://ai-devops-copilot-y0n0.onrender.com
 
 ---
 
