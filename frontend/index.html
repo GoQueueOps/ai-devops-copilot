@@ -387,7 +387,6 @@ Tip: Upload your runbooks above first for specific fix recommendations"></textar
       if (res.ok) {
         showUploadResult(`✓ ${data.filename} ingested — ${data.chunks} chunk(s) stored in knowledge base`, 'success');
         loadDocuments();
-        updateCurlCommand(file.name);
       } else {
         showUploadResult(`Error: ${data.detail}`, 'error');
       }
@@ -420,6 +419,7 @@ Tip: Upload your runbooks above first for specific fix recommendations"></textar
       ).join('');
     } catch {}
   }
+
 
   // ── LOG ANALYSIS ───────────────────────────────────────────────────────
   async function analyzeLog() {
